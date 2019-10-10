@@ -2,12 +2,10 @@ from selenium import webdriver
 import time
 import datetime
 import configparser
-from datetime import timedelta
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException
 from calendar import monthrange
 
 today = datetime.datetime.now()
@@ -58,8 +56,47 @@ dateinput.send_keys(current)
 browser.find_element_by_xpath('/html/body/div[3]/div[2]/div[3]/div[1]/'+
                               'div/div/div[3]/div[1]/table/tbody/tr/td/div/table/tbody/tr/td[2]').click()
 browser.find_element_by_id('reportexport').click()
+
 WebDriverWait(browser, 90).until(
     ec.element_to_be_clickable((By.ID, 'rptDataOverlayPanelContent')))
 browser.find_element_by_xpath('//*[@id="rptDataOverlayPanelContent"]/div/div[1]/table/tbody/tr[1]/td[2]/a').click()
 time.sleep(2)
+browser.find_element_by_xpath('//*[@id="csvExportBtnContainer"]/button/span').click()
+x = '//*[@id="rptOutputTopToolbar"]/div/div[1]/div[2]/table[4]/tbody/tr/td/img'
+WebDriverWait(browser, 90).until(
+    ec.element_to_be_clickable((By.XPATH, x)))
+browser.find_element_by_xpath(x).click() #quit button
+WebDriverWait(browser, 90).until(
+    ec.element_to_be_clickable((By.XPATH, '//*[@id="browsePageBody"]/form/div[10]/div/div[1]/div[2]/div/input')))
+searchbar = browser.find_element_by_xpath('//*[@id="browsePageBody"]/form/div[10]/div/div[1]/div[2]/div/input')
+searchbar.clear()
+searchbar.send_keys('WI New Vacancies')
+browser.find_element_by_xpath('//*[@id="browsePageBody"]/form/div[10]/div/div[1]/div[2]/div/div[2]/div[2]/img').click()
+x = '//*[@id="browsePageBody"]/form/div[10]/div/div[3]/div/div/div/div[1]/div/div[1]'
+WebDriverWait(browser, 90).until(
+    ec.element_to_be_clickable((By.XPATH, x)))
+actionChains = ActionChains(browser)
+actionChains.double_click(browser.find_element_by_xpath(x))
+actionChains.perform()
+WebDriverWait(browser, 90).until(
+    ec.element_to_be_clickable((By.XPATH, '//*[@id="116454"]/div/div[4]/div/div/div/div[1]/input')))
+browser.find_element_by_xpath('//*[@id="116454"]/div/div[4]/div/div/div/div[1]/input').click()
+
+dateinput1 = browser.find_element_by_xpath('/html/body/div[5]/div[2]/div[2]/div[1]/div[1]/input')
+dateinput2 = browser.find_element_by_xpath('/html/body/div[5]/div[2]/div[2]/div[1]/div[2]/input')
+WebDriverWait(browser, 90).until(
+    ec.element_to_be_clickable((By.XPATH, '/html/body/div[5]/div[2]/div[2]/div[1]/div[2]/input')))
+dateinput1.clear()
+dateinput2.clear()
+dateinput1.send_keys(startdate)
+dateinput2.send_keys(enddate)
+
+
+WebDriverWait(browser, 90).until(
+    ec.element_to_be_clickable((By.ID, 'reportexport')))
+browser.find_element_by_id('reportexport').click()
+
+WebDriverWait(browser, 90).until(
+    ec.element_to_be_clickable((By.ID, 'rptDataOverlayPanelContent')))
+browser.find_element_by_xpath('//*[@id="rptDataOverlayPanelContent"]/div/div[1]/table/tbody/tr[1]/td[2]/a').click()
 browser.find_element_by_xpath('//*[@id="csvExportBtnContainer"]/button/span').click()
