@@ -8,6 +8,8 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
 from calendar import monthrange
 
+#TODO - make this into an executable so others can use.
+
 today = datetime.datetime.now()
 current = today.strftime("01/%m/%Y" + " 00:00:00")
 today = today.replace(day=1)
